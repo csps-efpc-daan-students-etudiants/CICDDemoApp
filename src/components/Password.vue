@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <label> {{ text }} </label>
-    <input type="textbox" :id="name" class="form-control"/>
+    <input type="password" :id="name" class="form-control"/>
   </div>
 </template>
 
