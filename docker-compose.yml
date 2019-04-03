@@ -8,6 +8,7 @@ services:
       - 5432:5432
     volumes:
       - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+      - ./postgres-seed:/docker-entrypoint-initdb.d #run these scripts on first container creation
     environment: 
       - POSTGRES_PASSWORD=docker
   pgweb:
