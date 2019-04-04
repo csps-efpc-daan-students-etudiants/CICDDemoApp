@@ -16,5 +16,5 @@ steps:
 - script: docker-compose up -d
   displayName: 'Start System'
 
-- script: curl localhost:3001
+- script: curl localhost:4000
   displayName: smoketest
