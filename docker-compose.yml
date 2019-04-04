@@ -11,6 +11,17 @@ services:
       - ./postgres-seed:/docker-entrypoint-initdb.d #run these scripts on first container creation
     environment: 
       - POSTGRES_PASSWORD=docker
+  nodeapi:
+    build:
+      context: ./node-api-postgres
+    container_name: nodeapi
+    restart: always
+    ports:
+      - "3000:3000"
+    links: 
+      - pg-docker:db
+    depends_on:
+      - pg-docker
   pgweb:
     container_name: pgweb  # optional
     restart: always  # optional
