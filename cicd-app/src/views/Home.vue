@@ -9,8 +9,8 @@
     </div>
     <ul class="lst-spcd" 
         v-for="p in purchased" 
-        v-bind:key="p.name">
-      <li> <strong>{{ p.name }}</strong> <span class="text-right">{{ p.value }}</span> x{{p.amount}} = {{ p.value * p.amount}} </li>
+        v-bind:key="p.item">
+      <li> <strong>{{ p.item}}</strong> <span class="text-right">{{ p.value }}</span> x{{p.quantity}} = {{ p.value * p.quantity}} </li>
     </ul>
     <hr>
   </div>
@@ -19,12 +19,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import TextField from '@/components/TextField.vue'; // @ is an alias to /src
-import PurchaseService from '@/services/PurchaseService';
+import Api from '../services/api';
 
-interface Item {
-  name: string;
+interface PurchaseItem {
+  item: string;
   value: number;
-  amount: number;
+  quantity: number;
 }
 
 @Component({
@@ -33,10 +33,28 @@ interface Item {
   },
 })
 export default class Home extends Vue {
-  @Prop() public purchased: Item[] = [];
 
-  public mounted = () => {
-    PurchaseService.getPurchases();
+  public purchased: PurchaseItem[] = [];
+
+  public data() {
+    return {
+      purchased: [],
+    };
+  }
+  mounted() {
+
+    Api().get('/purchases').then((result) => {
+
+      result.data.forEach(i => { 
+        this.purchased.push({ 
+          item : i.item,
+          value: parseInt(i.value),
+          quantity: parseInt(i.quantity)
+        });
+      });
+    }).catch((reason) => {
+      throw reason;
+    });
 
   }
 }
