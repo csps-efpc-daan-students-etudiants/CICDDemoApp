@@ -22,6 +22,11 @@ services:
       - pg-docker:db
     depends_on:
       - pg-docker
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=docker
+      - DB_USER=postgres
+      - DB_NAME=postgres
   pgweb:
     container_name: pgweb  # optional
     restart: always  # optional
