@@ -39,3 +39,16 @@ services:
       - DATABASE_URL=postgres://postgres:docker@db:5432/postgres?sslmode=disable
     depends_on:
       - pg-docker # my database container is called postgres, not db
+  frontend: 
+    container_name: frontend
+    restart: always
+    build: 
+      context: ./cicd-app
+    ports: 
+      - 8080:80
+    links:
+      - nodeapi:backend
+    environment: 
+      - API_HOST=backend
+    depends_on: 
+      - nodeapi

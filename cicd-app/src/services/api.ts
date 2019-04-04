@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const host = process.env.API_HOST || 'localhost';
+
 export default () => {
   return axios.create({
-    baseURL: `http://localhost:3000`,
+    baseURL: `http://${host}:3000`,
     withCredentials: false,
     headers: {
       'Accept': 'application/json',

@@ -41,15 +41,15 @@ export default class Home extends Vue {
       purchased: [],
     };
   }
-  mounted() {
+  public mounted() {
 
     Api().get('/purchases').then((result) => {
 
-      result.data.forEach(i => { 
-        this.purchased.push({ 
+      result.data.forEach((i) => {
+        this.purchased.push({
           item : i.item,
-          value: parseInt(i.value),
-          quantity: parseInt(i.quantity)
+          value: parseInt(i.value, 10),
+          quantity: parseInt(i.quantity, 10),
         });
       });
     }).catch((reason) => {
