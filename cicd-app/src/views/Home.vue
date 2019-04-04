@@ -45,7 +45,7 @@ export default class Home extends Vue {
 
     Api().get('/purchases').then((result) => {
 
-      result.data.forEach((i) => {
+      result.data.forEach((i: any) => {
         this.purchased.push({
           item : i.item,
           value: parseInt(i.value, 10),
