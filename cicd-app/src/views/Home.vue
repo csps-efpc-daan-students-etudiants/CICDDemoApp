@@ -19,11 +19,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import TextField from '@/components/TextField.vue'; // @ is an alias to /src
+import PurchaseService from '@/services/PurchaseService';
 
-interface Item { 
-  name: string,
-  value: number
-  amount: number
+interface Item {
+  name: string;
+  value: number;
+  amount: number;
 }
 
 @Component({
@@ -32,18 +33,11 @@ interface Item {
   },
 })
 export default class Home extends Vue {
-  @Prop() purchased: Item[] = [{
-    name: "Gum",
-    value: 1,
-    amount: 1
-  },{
-    name: "Chocolate Bar",
-    value: 2,
-    amount: 10
-  },{
-    name: "Gold Bar",
-    value: 5,
-    amount: 3
-  }];
+  @Prop() public purchased: Item[] = [];
+
+  public mounted = () => {
+    PurchaseService.getPurchases();
+
+  }
 }
 </script>
