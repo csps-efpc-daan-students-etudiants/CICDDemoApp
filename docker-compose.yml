@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=docker
   express-api:
     build:
-      context: ./node-api-postgres
+      context: ./express-api
     container_name: express-api
     restart: always
     ports:
@@ -43,7 +43,7 @@ services:
     container_name: vue-client
     restart: always
     build: 
-      context: ./cicd-app
+      context: ./vue-client
     ports: 
       - 8080:80
     links:
