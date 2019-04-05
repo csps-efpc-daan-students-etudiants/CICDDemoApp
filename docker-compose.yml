@@ -1,7 +1,7 @@
 version: '3'
 services:
-  pg-docker:
-    container_name: pg-docker
+  postgres-database:
+    container_name: postgres-database
     restart: always
     image: postgres:alpine
     ports:
@@ -11,17 +11,17 @@ services:
       - ./postgres-seed:/docker-entrypoint-initdb.d #run these scripts on first container creation
     environment: 
       - POSTGRES_PASSWORD=docker
-  nodeapi:
+  express-api:
     build:
       context: ./node-api-postgres
-    container_name: nodeapi
+    container_name: express-api
     restart: always
     ports:
       - "3000:3000"
     links: 
-      - pg-docker:db
+      - postgres-database:db
     depends_on:
-      - pg-docker
+      - postgres-database
     environment:
       - DB_HOST=db
       - DB_PASSWORD=docker
@@ -34,21 +34,21 @@ services:
     ports: 
       - "8081:8081" 
     links: 
-      - pg-docker:db  # my database container is called postgres, not db
+      - postgres-database:db  # my database container is called postgres, not db
     environment:
       - DATABASE_URL=postgres://postgres:docker@db:5432/postgres?sslmode=disable
     depends_on:
-      - pg-docker # my database container is called postgres, not db
-  frontend: 
-    container_name: frontend
+      - postgres-database # my database container is called postgres, not db
+  vue-client: 
+    container_name: vue-client
     restart: always
     build: 
       context: ./cicd-app
     ports: 
       - 8080:80
     links:
-      - nodeapi:backend
+      - express-api:backend
     environment: 
       - API_HOST=backend
     depends_on: 
-      - nodeapi
+      - express-api
