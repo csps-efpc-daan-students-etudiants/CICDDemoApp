@@ -8,8 +8,8 @@ const pool = new Pool({
   port: 5432
 });
 
-const getPurchases = (request, response) => {
-  pool.query("SELECT * FROM purchase ORDER BY id ASC", (error, results) => {
+const getTasks = (request, response) => {
+  pool.query("SELECT * FROM task ORDER BY id ASC", (error, results) => {
     if (error) {
       throw error;
     }
@@ -17,21 +17,21 @@ const getPurchases = (request, response) => {
   });
 };
 
-const addPurchase = (request, response) => {
-  const { item, value, quantity } = request.body;
+const addTask = (request, response) => {
+  const { name, completed } = request.body;
   pool.query(
-    "INSERT into purchase (item, value, quantity) VALUES ($1, $2, $3)",
-    [item, value, quantity],
-    (error, response) => {
+    "INSERT into task (name, completed) VALUES ($1, $2)",
+    [name, completed],
+    (error,results) => {
       if (error) {
         throw error;
       }
-      response.status(201).send(`Item added with ID: ${result.insertId}`);
+      response.status(201).send(`Item added with ID: ${results.insertId}`);
     }
   );
 };
 
 module.exports = {
-  getPurchases,
-  addPurchase
+  getTasks: getTasks,
+  addTask: addTask
 }

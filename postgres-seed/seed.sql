@@ -1,7 +1,9 @@
-CREATE TABLE purchase (
+CREATE TABLE task (
   ID SERIAL PRIMARY KEY,
-  item text,
-  value numeric(10,2),
-  quantity numeric(10)
+  name text,
+  completed boolean
 );
-INSERT INTO purchase (item, value, quantity) VALUES ('Gold', 100.0, 1)
+
+INSERT INTO task(name, completed) VALUES ('Wake Up', true);
+INSERT INTO task(name, completed) VALUES ('Make a List', true);
+INSERT INTO task(name, completed) VALUES ('Go for a walk', false);
