@@ -15,7 +15,7 @@
       <h2>Task List</h2>
       <ul class="lst-spcd list-unstyled" v-for="p in tasks" v-bind:key="p.item">
         <li >
-          <button v-on:click.prevent="toggleTask(p.id,!p.completed)" type="button" class="btn btn-link">
+          <button v-on:click.prevent="toggleTask(p.uniqueid,!p.completed)" type="button" class="btn btn-link">
             <div v-if="p.completed">
               <s><strong><span class="wb-inv">Toggle </span>{{ p.name}}</strong></s>
             </div>
@@ -33,9 +33,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Api from '../services/api';
+import {v4 as uuid} from 'uuid';
 
 interface Task {
-  id: number;
+  uniqueid: string;
   name: string;
   completed: boolean;
 }
@@ -58,7 +59,7 @@ export default class Home extends Vue {
 
       result.data.forEach((i: Task) => {
         this.tasks.push({
-          id: i.id,
+          uniqueid: i.uniqueid,
           name: i.name,
           completed: i.completed,
         });
@@ -72,13 +73,13 @@ export default class Home extends Vue {
   public async addItem(e: any) {
     const task = {
       id: 0,
+      uniqueid: uuid(),
       name: this.name,
       completed: false,
     };
 
     try {
       const response = await Api().post('/task', task);
-      task.id = parseInt(response.data, 10);
       this.tasks.push(task);
     } catch (reason) {
       throw reason;
@@ -86,10 +87,10 @@ export default class Home extends Vue {
 
   }
 
-  public async toggleTask(id: number, state: boolean) {
+  public async toggleTask(id: string, state: boolean) {
     try {
       const response = await Api().post('/toggleTask', { id, state});
-      this.tasks.find((i: Task) => i.id === id)!.completed = state;
+      this.tasks.find((i: Task) => i.uniqueid === id)!.completed = state;
     } catch (reason) {
       throw reason;
     }

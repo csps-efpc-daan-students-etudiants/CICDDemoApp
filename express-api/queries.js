@@ -18,10 +18,10 @@ const getTasks = (request, response) => {
 };
 
 const addTask = (request, response) => {
-  const { name, completed } = request.body;
+  const { name, uniqueid, completed } = request.body;
   pool.query(
-    "INSERT into task (name, completed) VALUES ($1, $2)",
-    [name, completed],
+    "INSERT into task (name, uniqueid, completed) VALUES ($1, $2, $3)",
+    [name, uniqueid, completed],
     (error,results) => {
       if (error) {
         throw error;
@@ -33,7 +33,7 @@ const addTask = (request, response) => {
 
 const toggleTask = (request, response) => { 
   const { id, state } = request.body;
-  pool.query("UPDATE task SET completed=$2 WHERE id=$1;",
+  pool.query("UPDATE task SET completed=$2 WHERE uniqueid=$1;",
   [id, state],
   (error, results) => { 
     if (error) { 
