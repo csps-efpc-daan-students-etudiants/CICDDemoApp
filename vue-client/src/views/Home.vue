@@ -1,28 +1,33 @@
 <template>
-  <div>
+  <form role="form">
+
     <div class="container">
-      <form role="form">
+      <h2>Add a Task</h2>
         <div class="form-group">
           <label for="name">Name</label>
         <input type="textbox" id="name" v-model="name" class="form-control">
         </div>
 
         <button class="btn btn-default" id="addTask" type="submit" v-on:click.prevent="addItem">Add to List</button>
-      </form>
     </div>
-    <p>
+    
+    <div class="container">
+      <h2>Task List</h2>
       <ul class="lst-spcd list-unstyled" v-for="p in tasks" v-bind:key="p.item">
-        <li v-on:click="toggleTask(p.id,!p.completed)">
-          <div v-if="p.completed">
-            <s><strong>{{ p.name}}</strong></s>
-          </div>
-          <div v-else>
-            <strong>{{ p.name}}</strong>
-          </div>
+        <li >
+          <button v-on:click.prevent="toggleTask(p.id,!p.completed)" type="button" class="btn btn-link">
+            <div v-if="p.completed">
+              <s><strong><span class="wb-inv">Toggle </span>{{ p.name}}</strong></s>
+            </div>
+            <div v-else>
+              <span class="wb-inv">Toggle </span>{{ p.name}}</strong>
+            </div>
+          </button>
         </li>
       </ul>
-    </p>
-  </div>
+    </div>
+  </form>
+
 </template>
 
 <script lang="ts">

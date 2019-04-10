@@ -26,12 +26,26 @@ const addTask = (request, response) => {
       if (error) {
         throw error;
       }
-      response.status(201).send(`Item added with ID: ${results.insertId}`);
+      response.status(201).send(`${results.insertId}`);
     }
   );
 };
 
+const toggleTask = (request, response) => { 
+  const { id, state } = request.body;
+  pool.query("UPDATE task SET completed=$2 WHERE id=$1;",
+  [id, state],
+  (error, results) => { 
+    if (error) { 
+      throw error;
+    } 
+    response.status(201).send(`${id} set to ${state}`);
+  });
+};
+
+
 module.exports = {
   getTasks: getTasks,
-  addTask: addTask
+  addTask: addTask,
+  toggleTask: toggleTask
 }

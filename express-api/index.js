@@ -19,6 +19,7 @@ app.get("/", (request, response) => {
 
 app.get("/tasks", db.getTasks);
 app.post("/task", db.addTask);
+app.post("/toggleTask", db.toggleTask);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
