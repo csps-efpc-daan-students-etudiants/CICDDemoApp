@@ -13,5 +13,8 @@ describe("Task List", () => {
 
   it("toggles a task", () => {
     cy.visit("/");
+    cy.get(":nth-child(5) > li > .btn")
+      .click();
+    cy.get(":nth-child(5) > li > .btn > div > s");
   });
 });
