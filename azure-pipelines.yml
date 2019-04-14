@@ -16,8 +16,8 @@ jobs:
       displayName: 'docker build'
     - script: | 
         mkdir "publish" && \
-        docker save express-api > ./publish/express-api.tar && \
-        docker save vue-client > ./publish/vue-client.tar
+        docker save cicddemoapp_express-api:latest > ./publish/cicddemoapp_express-ap:latesti.tar && \
+        docker save cicddemoapp_vue-client:latest > ./publish/cicddemoapp_vue-clien:latestt.tar
       displayName: 'save docker image'
     - task: PublishPipelineArtifact@0
       inputs: 
@@ -33,7 +33,7 @@ jobs:
         inputs: 
           targetPath: .
           artifactName: images
-      - script: docker load < express-api.tar
+      - script: docker load < cicddemoapp_express-api:latest.tar
         displayName: 'Loading Express Api'
       - script: docker-compose up -d  express-api postgres-database
         displayName: 'Start Backend'
