@@ -34,12 +34,12 @@ jobs:
           artifactName: images
       - script: docker load < docker-images.tar
         displayName: 'Loading Express Api'
-      - script: docker-compose up -d  express-api postgres-database
+      - script: docker-compose up -d  express-api postgres-database vue-client
         displayName: 'Start Backend'
       - script: |
           cd vue-client
           npm ci
-          npx cypress verify
+          vue-cli-server test:e2e --headless -url localhost:8080
         displayName: 'Setup Cypress'
       - script: npx cypress run --config video=false
         displayName: 'Run Cypress test'
