@@ -12,6 +12,8 @@ services:
     environment: 
       - POSTGRES_PASSWORD=docker
   express-api:
+
+    image: express-api:latest
     build:
       context: ./express-api
     container_name: express-api
@@ -42,6 +44,7 @@ services:
   vue-client: 
     container_name: vue-client
     restart: always
+    image: vue-client:latest
     build: 
       context: ./vue-client
     ports: 
