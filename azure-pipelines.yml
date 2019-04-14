@@ -6,15 +6,42 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
 
-steps:
-- script: docker-compose build
-  displayName: 'Build Images'
+jobs: 
+  - job: build_containers
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: docker-compose build 
+      displayName: 'docker build'
+    - script: | 
+        mkdir "publish" && \
+        docker save express-api > ./publish/express-api.tar && \
+        docker save vue-client > ./publish/vue-client.tar
+      displayName: 'save docker image'
+    - task: PublishPipelineArtifact@0
+      inputs: 
+        artifactName: images
+        targetPath: './publish'
+  - job: integration_tests
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    dependsOn: 
+      - build_containers
+    steps:
+      - task: DownloadPipelineArtifact@0
+        inputs: 
+          targetPath: .
+          artifactName: images
+      - script: docker load < express-api.tar
+        displayName: 'Loading Express Api'
+      - script: docker-compose up -d  express-api postgres-database
+        displayName: 'Start Backend'
+      - script: |
+          cd vue-client
+          npm ci
+          npx cypress verify
+        displayName: 'Setup Cypress'
+      - script: npx cypress run --config video=false
+        displayName: 'Run Cypress test'
 
-- script: docker-compose up -d
-  displayName: 'Start System'
-
-- script: curl localhost:3000
-  displayName: smoketest
