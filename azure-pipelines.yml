@@ -16,7 +16,7 @@ jobs:
       displayName: 'docker build'
     - script: | 
         mkdir "publish" && \
-        docker save cicddemoapp_express-api:latest > ./publish/cicddemoapp_express-ap:latesti.tar 
+        docker save -o docker-images.tar $(docker-compose config | awk '{if ($1 == "image:") print $2;}' ORS=" ")
       displayName: 'save docker image'
     - task: PublishPipelineArtifact@0
       inputs: 
@@ -32,7 +32,7 @@ jobs:
         inputs: 
           targetPath: .
           artifactName: images
-      - script: docker load < cicddemoapp_express-api:latest.tar
+      - script: docker load < docker-images.tar
         displayName: 'Loading Express Api'
       - script: docker-compose up -d  express-api postgres-database
         displayName: 'Start Backend'
