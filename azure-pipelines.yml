@@ -36,11 +36,9 @@ jobs:
         displayName: 'Loading Express Api'
       - script: docker-compose up -d  express-api postgres-database vue-client
         displayName: 'Start Backend'
-      - script: |
+      - script: | 
           cd vue-client
-          npm ci
-          vue-cli-server test:e2e --headless -url localhost:8080
-        displayName: 'Setup Cypress'
-      - script: npx cypress run --config video=false
-        displayName: 'Run Cypress test'
+          npm ci 
+          vue-cli-service test:e2e --headless -url localhost:8080
+        displayName: 'Run Test'
 
