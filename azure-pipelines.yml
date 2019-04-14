@@ -12,12 +12,11 @@ jobs:
     pool:
       vmImage: 'Ubuntu-16.04'
     steps:
-    - script: docker-compose build 
+    - script: docker-compose build express-api
       displayName: 'docker build'
     - script: | 
         mkdir "publish" && \
-        docker save cicddemoapp_express-api:latest > ./publish/cicddemoapp_express-ap:latesti.tar && \
-        docker save cicddemoapp_vue-client:latest > ./publish/cicddemoapp_vue-clien:latestt.tar
+        docker save cicddemoapp_express-api:latest > ./publish/cicddemoapp_express-ap:latesti.tar 
       displayName: 'save docker image'
     - task: PublishPipelineArtifact@0
       inputs: 
