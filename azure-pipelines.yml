@@ -39,6 +39,6 @@ jobs:
       - script: | 
           cd vue-client
           npm ci 
-          npm run test:e2e-headless
+          npm run test:e2e-cli
         displayName: 'Run Test'
 
