@@ -16,7 +16,7 @@ jobs:
       displayName: 'docker build'
     - script: | 
         mkdir "publish" && \
-        docker save -o docker-images.tar express-api:latest vue-client:latest
+        docker save -o ./publish/docker-images.tar express-api:latest vue-client:latest
       displayName: 'save docker image'
     - task: PublishPipelineArtifact@0
       inputs: 
