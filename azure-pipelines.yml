@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
@@ -33,7 +28,7 @@ jobs:
           targetPath: .
           artifactName: images
       - script: docker load < docker-images.tar
-        displayName: 'Loading Express Api'
+        displayName: 'Loading Docker Images'
       - script: docker-compose up -d  express-api postgres-database vue-client
         displayName: 'Start Backend'
       - script: | 
@@ -41,4 +36,17 @@ jobs:
           npm ci 
           npm run test:e2e-cli
         displayName: 'Run Test'
+  - job: api_test
+    pool: 
+      vmImage: 'Ubuntu-16.04'
+    dependsOn: 
+      - build_containers
+    steps:
+      - task: DownloadPipelineArtifact@0
+        inputs: 
+          targetPath: .
+          artifactName: images
+      - script: docker load < docker-images.tar
+        displayName: 'Loading Docker Images'
+
 
